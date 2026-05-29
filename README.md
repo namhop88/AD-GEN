@@ -5,60 +5,34 @@
 </p>
 
 <p align="center">
-  <b>LLM-Ready Endpoint Security Dataset for SOC Automation, ATT&CK Reasoning, and Instruction Tuning</b>
+  <b>LLM-ready endpoint security dataset for SOC automation, ATT&CK reasoning, and instruction tuning</b>
 </p>
 
 ---
 
 # Overview
 
-AD-GEN is a large-scale endpoint telemetry transformation pipeline and dataset designed for:
+AD-GEN transforms large-scale Windows Sysmon telemetry from the COMISET corpus into process-centric, privacy-preserving, compressed, and validated ATT&CK-aligned narrative records.
+
+It is designed for:
 
 - LLM-based SOC automation
-- MITRE ATT&CK-aware instruction tuning
+- ATT&CK-aware instruction tuning
 - Threat hunting assistant development
 - Endpoint behavior reasoning
 - Security narrative generation
-
-AD-GEN transforms raw Windows Sysmon telemetry into:
-
-- process-centric narratives,
-- privacy-preserving representations,
-- compressed behavioral sequences,
-- and validated ATT&CK-aligned synthetic analyst labels.
-
-The dataset is generated from the COMISET Windows endpoint telemetry corpus.
-
----
-
-# Pipeline
-
-AD-GEN transforms raw Windows endpoint telemetry into process-centric, privacy-preserving, compressed, and ATT&CK-aligned narrative records.
-
-The pipeline performs:
-
-- process-lifecycle reconstruction,
-- spatio-temporal normalization,
-- semantic compression,
-- SOC-style narrative generation,
-- ReAct-style automated labeling,
-- and deterministic MITRE ATT&CK validation.
-
-The complete pipeline is illustrated above.
 
 ---
 
 # Dataset Scale
 
-AD-GEN is generated from large-scale Windows endpoint telemetry across both laboratory and real-world enterprise environments.
-
 | Metric | LAB | REAL | Total |
 |---|---:|---:|---:|
-| Raw Sysmon events | 49,914,325 | 202,304,790 | 252,219,115 |
-| Post-squash events | 21,360,985 | 31,571,618 | 52,932,603 |
-| Step 2 prompts | 49,745 | 185,978 | 235,723 |
-| Step 3 LLM outputs | 50,671 | 190,109 | 240,780 |
-| Step 4 validated outputs | 50,622 | 190,085 | 240,707 |
+| Raw Sysmon Events | 49,914,325 | 202,304,790 | 252,219,115 |
+| Post-Squash Events | 21,360,985 | 31,571,618 | 52,932,603 |
+| Step 2 Narratives | 49,745 | 185,978 | 235,723 |
+| Step 3 LLM Outputs | 50,671 | 190,109 | 240,780 |
+| Step 4 Validated Outputs | 50,622 | 190,085 | 240,707 |
 
 ---
 
@@ -83,7 +57,7 @@ AD-GEN is generated from large-scale Windows endpoint telemetry across both labo
 
 ---
 
-# MITRE ATT&CK Distribution
+# Top MITRE ATT&CK Tactics
 
 | Tactic ID | Tactic Name | Frequency |
 |---|---|---:|
@@ -98,34 +72,36 @@ AD-GEN is generated from large-scale Windows endpoint telemetry across both labo
 
 # Output Format
 
-Each AD-GEN record is represented as structured JSON.
+Each record is stored as JSONL.
 
 ```json
 {
-  "thought_process": "Behavioral reasoning summary.",
-  "mitre_tactics": [
-    "TA0006_Credential_Access"
-  ],
-  "mitre_techniques": [
-    "T1003.001_OS_Credential_Dumping_LSASS_Memory"
-  ],
-  "risk_level": "Critical",
-  "recommended_actions": [
-    {
-      "tool_name": "terminate_process",
-      "parameters": {},
-      "rationale": "Credential dumping behavior detected."
-    }
-  ],
-  "summary": "Suspicious LSASS memory access consistent with credential dumping."
+  "sample_id": "ADGEN_0000001",
+  "environment": "LAB",
+  "source_dataset": "COMISET",
+  "narrative": "...",
+  "sysmon_hints": ["T1055"],
+  "label": {
+    "risk_level": "Medium",
+    "mitre_tactics": ["TA0005"],
+    "mitre_techniques": ["T1055"],
+    "recommended_actions": [
+      {
+        "tool_name": "get_file_metadata",
+        "parameters": {}
+      }
+    ],
+    "summary": "Process access behavior consistent with process injection.",
+    "analyst_rationale": "Evidence-based analyst reasoning.",
+    "verdict": "suspicious",
+    "label_source": "llm_validated"
+  }
 }
 ```
 
 ---
 
 # Supported SOC Actions
-
-AD-GEN constrains action generation to a fixed SOC vocabulary.
 
 ```text
 check_threat_intel
@@ -143,22 +119,29 @@ no_action
 
 | Metric | LAB | REAL |
 |---|---:|---:|
-| Parse success | 100.00% | 100.00% |
-| Schema validity | 99.93% | 99.98% |
-| Verdict consistency | 95.98% | 98.64% |
-| Unknown tactics after validation | 0.032% | 0.007% |
-| Unknown techniques after validation | 0.041% | 0.013% |
-| Invalid actions | 0 | 0 |
+| Parse Success | 100.00% | 100.00% |
+| Schema Validity | 99.93% | 99.98% |
+| Verdict Consistency | 95.98% | 98.64% |
+| Unknown Tactics After Validation | 0.032% | 0.007% |
+| Unknown Techniques After Validation | 0.041% | 0.013% |
+| Invalid Actions | 0 | 0 |
 
 ---
 
 # Repository Structure
 
 ```text
-AD-GEN/
-├── REAL
+AD-GEN
+├── README.md
 ├── LAB
-└── README.md
+│   └── NEW_LAB.jsonl
+├── REAL
+│   └── NEW_REAL.jsonl
+├── docs
+│   └── pipeline.png
+└── Conversion
+    ├── Conversion.py
+    └── react_soc_prompt.txt
 ```
 
 ---
@@ -169,25 +152,26 @@ AD-GEN/
 git clone https://github.com/namhop88/AD-GEN.git
 cd AD-GEN
 ```
+
+---
+
+# Files
+
+| File | Description |
+|---|---|
+| `LAB/NEW_LAB.jsonl` | AD-GEN records from the laboratory environment |
+| `REAL/NEW_REAL.jsonl` | AD-GEN records from the real university network environment |
+| `docs/pipeline.png` | Pipeline overview |
+| `Conversion/Conversion.py` | Format conversion utility |
+| `Conversion/react_soc_prompt.txt` | Labeling prompt used during generation |
+
 ---
 
 # Important Note
 
-AD-GEN labels are:
+AD-GEN labels are **validated synthetic analyst labels**, not human-adjudicated forensic ground truth.
 
-> validated synthetic analyst labels
-
-They are **not human-adjudicated forensic ground truth**.
-
-The dataset is intended for:
-
-- instruction tuning,
-- weakly supervised learning,
-- SOC assistant development,
-- ATT&CK-aware reasoning,
-- and large-scale endpoint narrative modeling.
-
-Additional expert review is recommended for operational deployment.
+The dataset is intended for research in instruction tuning, weak supervision, SOC assistant development, ATT&CK-aware reasoning, and endpoint narrative modeling. Additional expert review is recommended before operational use.
 
 ---
 
@@ -206,29 +190,24 @@ Additional expert review is recommended for operational deployment.
 
 # License
 
-Recommended:
-
-- Code: MIT License
-- Dataset: CC BY-NC 4.0
+| Component | License |
+|---|---|
+| Source Code | MIT License |
+| Dataset | CC BY-NC 4.0 |
 
 ---
 
 # Disclaimer
 
-AD-GEN is released for academic and defensive cybersecurity research only.
-
-The dataset should not be used as the sole basis for operational security decisions without expert review.
+AD-GEN is released for academic and defensive cybersecurity research only. It should not be used as the sole basis for operational security decisions without expert validation.
 
 ---
 
 # Contact
 
 **Dinh Phuong Nam**  
-University of Information Technology — VNU-HCM
+University of Information Technology (UIT), VNU-HCM  
 
-HUTECH UNIVERSITY
+HUTECH University
 
-GitHub:
-```text
-@tydinh888
-```
+GitHub: `@namhop88`
