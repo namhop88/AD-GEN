@@ -159,14 +159,13 @@ cd AD-GEN
 
 | File | Description |
 |---|---|
-| `LAB/NEW_LAB.jsonl` | AD-GEN records from the laboratory environment |
-| `REAL/NEW_REAL.jsonl` | AD-GEN records from the real university network environment |
-| `docs/pipeline.png` | Pipeline overview |
-| `Conversion/Conversion.py` | Format conversion utility |
-| `Conversion/react_soc_prompt.txt` | Labeling prompt used during generation |
-
+| `LAB/NEW_LAB.jsonl` | AD-GEN processed records derived from the COMISET laboratory environment |
+| `REAL/NEW_REAL.jsonl` | AD-GEN processed records derived from the COMISET real university network environment |
+| `docs/pipeline.png` | Overview of the AD-GEN transformation pipeline |
+| `Conversion/Conversion.py` | Utility for converting records to the release format |
+| `Conversion/react_soc_prompt.txt` | ReAct-style SOC labeling prompt used during generation |
 ---
-
+AD-GEN is derived from the COMISET Windows endpoint telemetry corpus; it does not claim to be the original raw telemetry source.
 # Important Note
 
 AD-GEN labels are **validated synthetic analyst labels**, not human-adjudicated forensic ground truth.
