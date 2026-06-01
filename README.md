@@ -127,6 +127,18 @@ no_action
 | Invalid Actions | 0 | 0 |
 
 ---
+# Cross-Model Audit
+
+| Metric | Value |
+|---|---:|
+| Audit Samples | 300 |
+| Auditor Models | 3 |
+| GPT-5.5 Composite Score | 0.748 |
+| Claude Opus 4.8 Composite Score | 0.748 |
+| Minimum Evidence Support Score | >0.72 |
+| Minimum ATT&CK Alignment Score | >0.72 |
+
+Three independent frontier language models (GPT-5.5, Claude Opus 4.8, and Gemini 3.5 Flash) were used to evaluate stratified samples from both LAB and REAL environments. Independent audits converged to nearly identical quality assessments, supporting the reliability and consistency of the validated ATT&CK-aligned labels.
 
 # Repository Structure
 
