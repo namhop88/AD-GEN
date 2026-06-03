@@ -1,26 +1,44 @@
-# AD-GEN: Evidence-Preserving Generation of Validated ATT&CK-Aligned Narratives from Large-Scale Endpoint Telemetry
+# SOCNarrative: A Large-Scale Corpus of Validated ATT&CK-Aligned Security Narratives from Endpoint Telemetry
 
 <p align="center">
   <img src="docs/pipeline.png" width="100%">
 </p>
 
 <p align="center">
-  <b>LLM-ready endpoint security dataset for SOC automation, ATT&CK reasoning, and instruction tuning</b>
+  <b>LLM-ready SOC narratives derived from large-scale Windows endpoint telemetry</b>
 </p>
 
 ---
 
 # Overview
 
-AD-GEN transforms large-scale Windows Sysmon telemetry from the COMISET corpus into process-centric, privacy-preserving, compressed, and validated ATT&CK-aligned narrative records.
+SOCNarrative is a large-scale endpoint security corpus generated from the COMISET Windows telemetry dataset.
 
-It is designed for:
+The corpus transforms raw Sysmon events into process-centric, privacy-preserving, compressed, and validated ATT&CK-aligned security narratives suitable for Security Operations Center (SOC) automation and large language model training.
+
+SOCNarrative is designed for:
 
 - LLM-based SOC automation
 - ATT&CK-aware instruction tuning
 - Threat hunting assistant development
 - Endpoint behavior reasoning
 - Security narrative generation
+- AI-assisted cyber defense research
+
+---
+
+# Why SOCNarrative?
+
+Unlike traditional endpoint datasets that primarily expose low-level event streams, SOCNarrative reconstructs process-level behavioral context and generates analyst-oriented narratives that preserve evidential relationships while remaining suitable for LLM training and evaluation.
+
+The dataset bridges the gap between raw telemetry and analyst reasoning by providing:
+
+- Process-centric behavioral narratives
+- Privacy-preserving telemetry representations
+- Validated ATT&CK annotations
+- Analyst-style reasoning
+- SOC action recommendations
+- LLM-ready instruction-tuning records
 
 ---
 
@@ -70,13 +88,28 @@ It is designed for:
 
 ---
 
+# Cross-Model Audit
+
+| Metric | Value |
+|---|---:|
+| Audit Samples | 300 |
+| Auditor Models | 3 |
+| GPT-5.5 Composite Score | 0.748 |
+| Claude Opus 4.8 Composite Score | 0.748 |
+| Minimum Evidence Support Score | >0.72 |
+| Minimum ATT&CK Alignment Score | >0.72 |
+
+Three independent frontier language models (GPT-5.5, Claude Opus 4.8, and Gemini 3.5 Flash) were used to evaluate stratified samples from both LAB and REAL environments. Independent audits converged to nearly identical quality assessments, supporting the reliability and consistency of the validated ATT&CK-aligned annotations.
+
+---
+
 # Output Format
 
 Each record is stored as JSONL.
 
 ```json
 {
-  "sample_id": "ADGEN_0000001",
+  "sample_id": "SOCNARRATIVE_0000001",
   "environment": "LAB",
   "source_dataset": "COMISET",
   "narrative": "...",
@@ -127,23 +160,11 @@ no_action
 | Invalid Actions | 0 | 0 |
 
 ---
-# Cross-Model Audit
-
-| Metric | Value |
-|---|---:|
-| Audit Samples | 300 |
-| Auditor Models | 3 |
-| GPT-5.5 Composite Score | 0.748 |
-| Claude Opus 4.8 Composite Score | 0.748 |
-| Minimum Evidence Support Score | >0.72 |
-| Minimum ATT&CK Alignment Score | >0.72 |
-
-Three independent frontier language models (GPT-5.5, Claude Opus 4.8, and Gemini 3.5 Flash) were used to evaluate stratified samples from both LAB and REAL environments. Independent audits converged to nearly identical quality assessments, supporting the reliability and consistency of the validated ATT&CK-aligned labels.
 
 # Repository Structure
 
 ```text
-AD-GEN
+SOCNarrative
 ├── README.md
 ├── LAB
 │   └── NEW_LAB.jsonl
@@ -161,36 +182,17 @@ AD-GEN
 # Installation
 
 ```bash
-git clone https://github.com/namhop88/AD-GEN.git
-cd AD-GEN
+git clone https://github.com/namhop88/SOCNarrative.git
+cd SOCNarrative
 ```
-
----
-
-# Files
-
-| File | Description |
-|---|---|
-| `LAB/NEW_LAB.jsonl` | AD-GEN processed records derived from the COMISET laboratory environment |
-| `REAL/NEW_REAL.jsonl` | AD-GEN processed records derived from the COMISET real university network environment |
-| `docs/pipeline.png` | Overview of the AD-GEN transformation pipeline |
-| `Conversion/Conversion.py` | Utility for converting records to the release format |
-| `Conversion/react_soc_prompt.txt` | ReAct-style SOC labeling prompt used during generation |
----
-AD-GEN is derived from the COMISET Windows endpoint telemetry corpus; it does not claim to be the original raw telemetry source.
-# Important Note
-
-AD-GEN labels are **validated synthetic analyst labels**, not human-adjudicated forensic ground truth.
-
-The dataset is intended for research in instruction tuning, weak supervision, SOC assistant development, ATT&CK-aware reasoning, and endpoint narrative modeling. Additional expert review is recommended before operational use.
 
 ---
 
 # Citation
 
 ```bibtex
-@article{nam2026adgen,
-  title   = {AD-GEN: Evidence-Preserving Generation of Validated ATT\&CK-Aligned Narratives from Large-Scale Endpoint Telemetry},
+@article{nam2026socnarrative,
+  title   = {SOCNarrative: A Large-Scale Corpus of Validated ATT\&CK-Aligned Security Narratives from Endpoint Telemetry},
   author  = {Dinh Phuong Nam and Nguyen Tan Cam},
   year    = {2026},
   journal = {Preprint}
@@ -210,15 +212,6 @@ The dataset is intended for research in instruction tuning, weak supervision, SO
 
 # Disclaimer
 
-AD-GEN is released for academic and defensive cybersecurity research only. It should not be used as the sole basis for operational security decisions without expert validation.
+SOCNarrative labels are validated synthetic analyst annotations rather than human-adjudicated forensic ground truth. The dataset is intended for research in SOC automation, instruction tuning, ATT&CK-aware reasoning, threat hunting assistance, and endpoint narrative modeling.
 
----
-
-# Contact
-
-**Dinh Phuong Nam**  
-University of Information Technology (UIT), VNU-HCM  
-
-HUTECH University
-
-GitHub: `@namhop88`
+Additional expert review is recommended before operational deployment.
