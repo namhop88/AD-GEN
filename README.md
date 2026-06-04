@@ -1,4 +1,5 @@
 # AD-GEN: Evidence-Preserving Generation of Validated ATT&CK-Aligned Narratives from Large-Scale Endpoint Telemetry
+# AD-GEN (Analyst-Driven Narrative Generation)
 
 <p align="center">
   <img src="docs/pipeline.png" width="100%">
@@ -12,9 +13,11 @@
 
 # Overview
 
-AD-GEN transforms large-scale Windows Sysmon telemetry from the COMISET corpus into process-centric, privacy-preserving, compressed, and validated ATT&CK-aligned narrative records.
+Modern endpoint telemetry datasets contain rich behavioral evidence but are often difficult to use directly for large language model (LLM) reasoning. Raw Sysmon logs are fragmented across individual events, contain sensitive identifiers, suffer from process identifier reuse, and provide limited behavioral context for security analysis.
 
-It is designed for:
+AD-GEN addresses this gap by transforming large-scale Windows Sysmon telemetry from the COMISET corpus into process-centric, privacy-preserving, compressed, and validated ATT&CK-aligned narrative records. The framework reconstructs process lifecycles, preserves behavioral evidence, normalizes temporal information, and generates analyst-style annotations suitable for LLM-based cybersecurity applications.
+
+AD-GEN is designed for:
 
 - LLM-based SOC automation
 - ATT&CK-aware instruction tuning
@@ -22,6 +25,7 @@ It is designed for:
 - Endpoint behavior reasoning
 - Security narrative generation
 
+The resulting dataset enables security-focused language models to reason over structured behavioral narratives rather than isolated raw events, while maintaining alignment with the MITRE ATT&CK framework through automated validation.
 ---
 
 # Dataset Scale
